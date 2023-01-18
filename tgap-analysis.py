@@ -1,7 +1,7 @@
-from tkinter.tix import Tree
+#from tkinter.tix import Tree
 from unittest import result
 from psycopg2 import connect, ProgrammingError
-from constants import connDetailsUbu, generateSelectAllFunction, LimburgTinyTgapEdgeOriginal
+from constants import connDetailsUbu, connDetailsWin, generateSelectAllFunction, resultingDatasetsEdge
 from pandas import DataFrame, array
 from geopandas import GeoSeries
 from numpy import array, column_stack, ndarray, nditer
@@ -93,19 +93,21 @@ def numberOfPointsPerStep(edgesNP: ndarray, columns: list) -> None:
         for step in range(edge.stepLow, edge.stepHigh):
             #check if this step already exists in our dictionary. if yes add #pts, if no create key
             if step not in noPtsStep:
-                print("This step does not yet exist in our dictionary, it is being created now")
+                #print("This step does not yet exist in our dictionary, it is being created now")
                 noPtsStep[step] = numNodesInEdge
             else:
-                print(f'Current points at step {step}: {noPtsStep[step]}')
+                #print(f'Current points at step {step}: {noPtsStep[step]}')
                 noPtsStep[step] += numNodesInEdge
-                print(f'New no of pts at step {step}: {noPtsStep[step]}')
+                #print(f'New no of pts at step {step}: {noPtsStep[step]}')
 
-    noPtsStepOrdered: dict = {}
+    #OLD VERSION FOR ORDERING
+    #noPtsStepOrdered: dict = {}
     #order the dictionary based on the key (so that it can be displayed in a graph)
-    for key, value in noPtsStep.items():
+    #for key, value in noPtsStep.items():
         #print(f'Step: {key}, No Pts: {value}')
-        noPtsStepOrdered[key] = value
-    
+        #noPtsStepOrdered[key] = value
+    noPtsStepOrdered = dict(sorted(noPtsStep.items()))
+
     #plot
     fig, ax = plt.subplots()
 
@@ -116,8 +118,8 @@ def numberOfPointsPerStep(edgesNP: ndarray, columns: list) -> None:
 def main():
     #parameters to be extracted
     #params: list[str] = [""]
-    sqlCommand: str = generateSelectAllFunction(LimburgTinyTgapEdgeOriginal)
-    cols, res = connectAndRetrieveFromDB(connDetailsUbu, sqlCommand)
+    sqlCommand: str = generateSelectAllFunction(resultingDatasetsEdge.LimburgSubset2.value)
+    cols, res = connectAndRetrieveFromDB(connDetailsWin, sqlCommand)
     #print(cols, res)
     
     numberOfPointsPerStep(res, cols)

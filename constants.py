@@ -1,7 +1,9 @@
+from enum import Enum
+
 connDetailsWin: dict = {
     'db': 'tgap-ng',
     'usr': 'postgres',
-    'psw': 'montero', #TODO: remove this detail before publishing any code, VERY UNSAFE!
+    'psw': 'password',
     'host': '127.0.0.1',
     'port': '5432'
 }
@@ -9,12 +11,25 @@ connDetailsWin: dict = {
 connDetailsUbu: dict = {
     'db': 'tgap-ng',
     'usr': 'postgres',
-    'psw': 'brio', #TODO: remove this detail before publishing any code, VERY UNSAFE!
+    'psw': 'password', 
     'host': '127.0.0.1',
     'port': '5432'
 }
 
-LimburgTinyTgapEdgeOriginal: str = 'public.top10nl_limburg_tiny_tgap_edge'
+#Initial Datasets
+LimburgOrig: str = 'public.top10nl_9x9_face'
+LimburgTest: str  = 'public.top10nl_limburg_tiny_face'
+
+class datasetsFace(Enum):
+    LimburgSmallTest = 'public.top10nl_limburg_tiny_face'
+    LimburgSubset1 = 'public.top10nl_limburg_subset1_face'
+    LimburgSubset2 = 'public.top10nl_limburg_subset2_face'
+    LimburgSubset3 = 'public.top10nl_limburg_subset3_face'
+    LimburgOriginal = 'public.top10nl_9x9_face'
+
+class resultingDatasetsEdge(Enum):
+    LimburgSubset1 = 'public.top10nl_limburg_subset1_tgap_edge'
+    LimburgSubset2 = 'public.top10nl_limburg_subset2_tgap_edge'
 
 def generateSelectAllFunction(table: str, args: list = None) -> str:
     """Helper function, used for generating an SQL command which retreives all entries and all data from a certain table
